@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Transactions extends Model
+{
+    protected $table ='Transactions'; 
+    protected $fillable = [
+        'id',
+        'user_id',
+        'course_id',
+        'amount',
+        'payment_date',
+        'status',
+        
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+     public function course()
+    {
+        return $this->belongsTo(courses::class, 'course_id');
+    }
+
+}
