@@ -15,7 +15,7 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\CategoryController;
 
 // Public routes
 Route::post('login', [UserController::class, 'login']);
@@ -48,7 +48,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('lessons', LessonController::class);
     Route::apiResource('enrollments', EnrollmentController::class);
     Route::apiResource('progress', ProgressController::class);
-    Route::apiResource('categories', CategoriesController::class);
+    Route::apiResource('categories', CategoryController::class);
     Route::apiResource('notifications', NotificationController::class);
     Route::apiResource('Course',CourseController::class);
+        Route::apiResource('transaction', TransactionController::class);
+
 });
