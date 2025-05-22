@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Transactions extends Model
+class Transaction extends Model
 {
-    protected $table ='Transactions'; 
+    protected $table ='Transaction'; 
     protected $fillable = [
         'id',
         'user_id',
@@ -25,5 +25,4 @@ class Transactions extends Model
     {
         return $this->belongsTo(courses::class, 'course_id');
     }
-
 }
