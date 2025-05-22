@@ -2,19 +2,25 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/verify-email/{id}/{token}', function ($id, $token) {
+    $user = User::findOrFail($id);
+
+    if ($user->email_verified_at) {
+        return response()->json(['message' => 'Email already verified.'], 200);
+    }
+
+    if ($user->email_verification_token === $token) {
+        $user->email_verified_at = now();
+        $user->email_verification_token = null;
+        $user->save();
+
+        return response()->json(['message' => 'Email verified successfully.'], 200);
+    }
+
+    return response()->json(['message' => 'Invalid verification link.'], 400);
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__.'/auth.php';
