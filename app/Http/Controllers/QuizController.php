@@ -22,8 +22,8 @@ class QuizController extends Controller
 
     public function store(Request $request)
     {
-        $request=validate([
-            'lesson_id'=>'required|exists:lesson_id',
+        $validatedData = $request->validate([
+            'lesson_id' => 'exists:lessons,id',
             'title'=>'required|string|max:255',
             'description'=>'nullable|string'
         ]);

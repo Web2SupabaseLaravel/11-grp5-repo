@@ -14,6 +14,10 @@ class DatabaseSeeder extends Seeder
             QuizQuestionSeeder::class,
             QuizAnswerSeeder::class,
             NotificationSeeder::class,
+            CertificateSeeder::class,
+            CourseSeeder::class,
+            LessonSeeder::class,
+            QuizSeeder::class,
         ]);
     }
 }

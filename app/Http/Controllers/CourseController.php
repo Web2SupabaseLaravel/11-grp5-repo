@@ -52,24 +52,19 @@ class CourseController extends Controller
 
     public function update(Request $request, Course $course)
 {
-    $user = Auth::user();
-
-    $validated = $request->validate([
+    $validatedData = $request->validate([
         'title' => 'sometimes|string|max:255',
         'description' => 'sometimes|string',
         'price' => 'sometimes|numeric|min:0',
-        'learning_objectives' => 'sometimes|array',
+        'learning_objectives' => 'sometimes',
         'category_id' => 'sometimes|exists:categories,id',
         'is_featured' => 'sometimes|boolean',
     ]);
 
-    $course->fill($validated);
+    $course->fill($validatedData);
     $course->save();
 
-    return response()->json([
-        'message' => 'Course updated successfully',
-        'course' => $course
-    ], 200);
+    return response()->json($course);
 }
 
 

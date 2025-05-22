@@ -37,9 +37,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     // Instructor-only route
-    Route::middleware('is_instructer')->group(function () {
+   #// Route::middleware('is_instructer')->group(function () {
         Route::apiResource('quizzes', QuizController::class);
-    });
+   #// });
 
     // General authenticated user routes
     Route::apiResource('quiz-questions', QuizQuestionController::class);

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\certificate;
+use App\Models\Certificate;
 use Illuminate\Http\Request;
 
 class CertificateController extends Controller
@@ -43,7 +43,7 @@ class CertificateController extends Controller
 
 
 
-    public function show(certificate $certificate)
+    public function show(Certificate $certificate)
     {
        return response()->json($certificate, 200);
     }
@@ -51,7 +51,7 @@ class CertificateController extends Controller
 
 
 
-    public function update(Request $request, certificate $certificate)
+    public function update(Request $request, Certificate $certificate)
     {
  $request->validate([
         'user_id' => 'sometimes|required|exists:users,id',
@@ -82,7 +82,7 @@ class CertificateController extends Controller
     }
 
 
-    public function destroy(certificate $certificate)
+    public function destroy(Certificate $certificate)
     {
         $certificate->delete();
 

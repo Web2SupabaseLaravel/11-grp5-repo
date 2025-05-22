@@ -11,9 +11,9 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->text('description')->nullable();
-            $table->decimal('price', 8 , 2);
+            $table->decimal('price')->nullable();
             $table->text('learning_object')->nullable();
             $table->foreignId('user_id')->constrained('users');
             $table->boolean('is_featured')->default(false);
