@@ -9,8 +9,12 @@ class NotificationSeeder extends Seeder
 {
     public function run(): void
     {
+        $user = \App\Models\User::first();
+        if (!$user) {
+            return;
+        }
         Notification::create([
-            'user_id' => 1,
+            'user_id' => $user->id,
             'message' => 'Your quiz result is available.',
             'type' => 'quiz',
             'is_read' => false,

@@ -21,8 +21,20 @@ use App\Http\Controllers\CategoryController;
 Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);
 
+// Routes for Email verification (if using email verification)
+Route::get('/email/verify/{id}/{hash}', function (Request $request) {
+    $request->user()->markEmailAsVerified();
+    return response()->json(['message' => 'Email verified successfully']);
+})->middleware(['auth:sanctum', 'signed'])->name('verification.verify');
+
+// Resend email verification notification
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return response()->json(['message' => 'Verification email sent successfully']);
+})->middleware(['auth:sanctum', 'throttle:6,1'])->name('verification.send');
+
 // Authenticated routes
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:api'])->group(function () {
 
     Route::get('/user', function (Request $request) {
         return $request->user();
