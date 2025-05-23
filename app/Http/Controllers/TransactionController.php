@@ -6,7 +6,7 @@ use App\Models\Transactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class TransactionsController extends Controller
+class TransactionController extends Controller
 {
     public function test()
     {
@@ -15,13 +15,13 @@ class TransactionsController extends Controller
 
     public function index()
     {
-        $Transactions = Transactions::all();
+        $Transaction = Transaction::all();
 
-        if ($Transactions->isEmpty()) {
+        if ($Transaction->isEmpty()) {
             return response()->json(['message' => 'No users found'], 404);
         }
 
-        return response()->json($Transactions, 200);
+        return response()->json($Transaction, 200);
     }
 
    public function store(Request $request)
@@ -35,7 +35,7 @@ class TransactionsController extends Controller
         ]);
 
 
-        $Transactions = Transactions::create([
+        $Transaction = Transaction::create([
             'user_id' => $request->user_id,
             'course_id' => $request->course_id,
             'amount' => $request->amount,
@@ -45,12 +45,12 @@ class TransactionsController extends Controller
 
         ]);
 
-        return response()->json(['message' => 'Transaction created successfully', 'Transactions' => $Transactions], 201);
+        return response()->json(['message' => 'Transaction created successfully', 'Transaction' => $Transaction], 201);
     }
 
-    public function show(Transactions $Transactions)
+    public function show(Transaction $Transaction)
     {
-        return response()->json($Transactions, 200);
+        return response()->json($Transaction, 200);
     }
 
    
@@ -67,38 +67,38 @@ class TransactionsController extends Controller
         ]);
 
         if ($request->has('user_id')) {
-            $Transactions->name = $request->name;
+            $Transaction->name = $request->name;
         }
 
         if ($request->has('course_id')) {
-            $Transactions->course_id = $request->course_id;
+            $Transaction->course_id = $request->course_id;
         }
 
 
         if ($request->has('amount')) {
-            $Transactions->amount = $request->amount;
+            $Transaction->amount = $request->amount;
         }
 
          if ($request->has('payment_date')) {
-            $Transactions->payment_date = $request->payment_date;
+            $Transaction->payment_date = $request->payment_date;
 
         } 
         
         if ($request->has('status')) {
-            $Transactions->status = $request->status;
+            $Transaction->status = $request->status;
         } 
 
         
 
-        $Transactions->save();
+        $Transaction->save();
 
-        return response()->json(['message' => 'Categories updated successfully', 'Transactions' => $Transactions], 200);
+        return response()->json(['message' => 'Transaction updated successfully', 'Transaction' => $Transaction], 200);
     }
 
-    public function destroy(Transactions $Transactions)
+    public function destroy(Transaction $Transaction)
     {
-        $Transactions->delete();
+        $Transaction->delete();
 
-        return response()->json(['message' => 'Transactions deleted successfully'], 200);
+        return response()->json(['message' => 'Transaction deleted successfully'], 200);
     }
 }
