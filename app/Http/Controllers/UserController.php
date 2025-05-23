@@ -8,119 +8,73 @@ use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\RegisterUser;
 use App\Mail\ConfirmEmail;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\WelcomeEmail;
-use App\Mail\WelcomeMail;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
-/**
- * @OA\Info(
- *     title="Laravel API",
- *     version="1.0.0",
- *     description="API Documentation for User Management"
- * )
- *
- * @OA\Server(
- *     url="http://localhost:8000",
- *     description="Local server"
- * )
- *
- * @OA\SecurityScheme(
- *     securityScheme="bearerAuth",
- *     type="http",
- *     scheme="bearer",
- *     bearerFormat="JWT"
- * )
- */
 class UserController extends Controller
 {
     /**
-     * @OA\Post(
-     *     path="/api/register",
-     *     summary="Register a new user",
-     *     tags={"Auth"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"name","email","password"},
-     *             @OA\Property(property="name", type="string", example="Alaa Sousa"),
-     *             @OA\Property(property="email", type="string", example="alaa@example.com"),
-     *             @OA\Property(property="password", type="string", example="12345678")
-     *         )
-     *     ),
-     *     @OA\Response(response=201, description="User registered successfully")
-     * )
+     * Register a new user and send verification email.
      */
     public function register(RegisterUser $request)
     {
+        $validated = $request->validated();
+
+        // Create user with verification token
         $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-            'role_id'  => 2,
-            'email_verification_token' => Str::random(32),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role_id' => 2,
+            'email_verification_token' => Str::random(64),
         ]);
 
-        $token = JWTAuth::fromUser($user);
+        // Send confirmation email
         Mail::to($user->email)->send(new ConfirmEmail($user));
-        event(new Registered($user));
+
+        // Issue JWT token
+        $token = JWTAuth::fromUser($user);
 
         return response()->json([
-            'message' => 'User registered successfully. Please verify your email.',
-            'user'    => $user,
-            'token'   => $token,
+            'message' => 'Registered! Please check your email to verify your account.',
+            'user' => $user,
+            'token' => $token,
         ], 201);
     }
 
     /**
-     * @OA\Post(
-     *     path="/api/login",
-     *     summary="Login user",
-     *     tags={"Auth"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"email","password"},
-     *             @OA\Property(property="email", type="string", example="alaa@example.com"),
-     *             @OA\Property(property="password", type="string", example="12345678")
-     *         )
-     *     ),
-     *     @OA\Response(response=200, description="Login successful"),
-     *     @OA\Response(response=401, description="Invalid credentials")
-     * )
+     * Authenticate user and issue token (only if email is verified).
      */
     public function login(Request $request)
     {
-        $request->validate([
-            'email'    => 'required|email',
+        $credentials = $request->validate([
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
-        $credentials = $request->only('email', 'password');
-
-        if (!$token = JWTAuth::attempt($credentials)) {
+        // Attempt authentication
+        if (! $token = JWTAuth::attempt($credentials)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
         $user = JWTAuth::user();
-        Mail::to($user->email)->send(new ConfirmEmail($user));
+
+        // Block login if email not verified
+        if (! $user->email_verified_at) {
+            return response()->json([
+                'message' => 'Please verify your email before logging in.'
+            ], 403);
+        }
 
         return response()->json([
             'message' => 'Login successful',
-            'user'    => $user,
-            'token'   => $token,
+            'user' => $user,
+            'token' => $token,
         ], 200);
     }
 
     /**
-     * @OA\Post(
-     *     path="/api/logout",
-     *     summary="Logout user",
-     *     tags={"Auth"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Response(response=200, description="Logout successful")
-     * )
+     * Invalidate the current token.
      */
     public function logout()
     {
@@ -129,13 +83,7 @@ class UserController extends Controller
     }
 
     /**
-     * @OA\Get(
-     *     path="/api/users",
-     *     summary="List all users",
-     *     tags={"Users"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Response(response=200, description="List of users")
-     * )
+     * List all users (admin).
      */
     public function index()
     {
@@ -149,23 +97,7 @@ class UserController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *     path="/api/users",
-     *     summary="Create new user",
-     *     tags={"Users"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"name","email","password","role_id"},
-     *             @OA\Property(property="name", type="string", example="New User"),
-     *             @OA\Property(property="email", type="string", example="newuser@example.com"),
-     *             @OA\Property(property="password", type="string", example="password123"),
-     *             @OA\Property(property="role_id", type="integer", example=2)
-     *         )
-     *     ),
-     *     @OA\Response(response=201, description="User created")
-     * )
+     * Create a new user (admin).
      */
     public function store(Request $request)
     {
@@ -187,20 +119,7 @@ class UserController extends Controller
     }
 
     /**
-     * @OA\Get(
-     *     path="/api/users/{id}",
-     *     summary="Get single user by ID",
-     *     tags={"Users"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(response=200, description="User found"),
-     *     @OA\Response(response=404, description="User not found")
-     * )
+     * Show a specific user.
      */
     public function show(User $user)
     {
@@ -208,27 +127,7 @@ class UserController extends Controller
     }
 
     /**
-     * @OA\Put(
-     *     path="/api/users/{id}",
-     *     summary="Update a user",
-     *     tags={"Users"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=false,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="name", type="string", example="Updated Name"),
-     *             @OA\Property(property="email", type="string", example="updated@example.com"),
-     *             @OA\Property(property="password", type="string", example="newpassword123")
-     *         )
-     *     ),
-     *     @OA\Response(response=200, description="User updated")
-     * )
+     * Update an existing user.
      */
     public function update(Request $request, User $user)
     {
@@ -239,8 +138,8 @@ class UserController extends Controller
         ]);
 
         $user->update([
-            'name'     => $request->name ?? $user->name,
-            'email'    => $request->email ?? $user->email,
+            'name'     => $request->name     ?? $user->name,
+            'email'    => $request->email    ?? $user->email,
             'password' => $request->password ? Hash::make($request->password) : $user->password,
         ]);
 
@@ -248,19 +147,7 @@ class UserController extends Controller
     }
 
     /**
-     * @OA\Delete(
-     *     path="/api/users/{id}",
-     *     summary="Delete a user",
-     *     tags={"Users"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(response=200, description="User deleted")
-     * )
+     * Delete a user.
      */
     public function destroy(User $user)
     {
