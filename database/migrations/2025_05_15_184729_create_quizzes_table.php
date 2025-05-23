@@ -11,7 +11,10 @@ return new class extends Migration
     {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
-            $table->foreignID('lesson_id')->constrained('lessons');
+            $table->foreignID('lesson_id')
+            ->constrained('lessons')
+            ->onDelete('cascade');
+
             $table->string('title');
             $table->text('description')->nullable();
             $table->timestamps();

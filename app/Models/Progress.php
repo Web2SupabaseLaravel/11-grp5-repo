@@ -15,13 +15,13 @@ class Progress extends Model
         'completed_at'
 
     ];
-public function enrollment()
+public function Enrollment()
     {
         return $this->belongsTo(Enrollment::class, 'enrollment_id');
     }
-public function lesson()
+public function Lesson()
     {
-        return $this->belongsTo(lesson::class, 'lesson_id');
+        return $this->belongsTo(Lesson::class, 'lesson_id');
     }
 }
 

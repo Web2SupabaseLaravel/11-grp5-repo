@@ -9,10 +9,25 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/notifications",
+     *     summary="Get all notifications for the authenticated user",
+     *     tags={"Notifications"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of notifications"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No notifications found"
+     *     )
+     * )
+     */
     public function index()
     {
-         $notifications = Auth::user()->notifications;
-
+        $notifications = Auth::user()->notifications;
 
         if ($notifications->isEmpty()) {
             return response()->json(['message' => 'No notifications found'], 404);
@@ -21,13 +36,32 @@ class NotificationController extends Controller
         return response()->json($notifications, 200);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/notifications",
+     *     summary="Create a new notification for the authenticated user",
+     *     tags={"Notifications"},
+     *     security={{"sanctum":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"message", "type"},
+     *             @OA\Property(property="message", type="string", example="New message received"),
+     *             @OA\Property(property="type", type="string", example="info")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Notification created successfully"
+     *     )
+     * )
+     */
     public function store(NotificationStore $request)
     {
         $user_id = Auth::user()->id;
-       $validatedData= $request->validated();
+        $validatedData = $request->validated();
         $validatedData['user_id'] = $user_id;
         $notification = Notification::create($validatedData);
-
 
         return response()->json([
             'message' => 'Notification created successfully',
@@ -35,11 +69,56 @@ class NotificationController extends Controller
         ], 201);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/notifications/{id}",
+     *     summary="Get a specific notification by ID",
+     *     tags={"Notifications"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Notification details"
+     *     )
+     * )
+     */
     public function show(Notification $notification)
     {
         return response()->json($notification, 200);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/notifications/{id}",
+     *     summary="Update a notification",
+     *     tags={"Notifications"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="user_id", type="integer", example=1),
+     *             @OA\Property(property="message", type="string", example="Updated notification message"),
+     *             @OA\Property(property="type", type="string", example="warning"),
+     *             @OA\Property(property="is_read", type="boolean", example=true)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Notification updated successfully"
+     *     )
+     * )
+     */
     public function update(Request $request, Notification $notification)
     {
         $request->validate([
@@ -61,6 +140,24 @@ class NotificationController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/notifications/{id}",
+     *     summary="Delete a notification",
+     *     tags={"Notifications"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Notification deleted successfully"
+     *     )
+     * )
+     */
     public function destroy(Notification $notification)
     {
         $notification->delete();

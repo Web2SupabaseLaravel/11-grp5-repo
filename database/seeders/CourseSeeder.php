@@ -27,9 +27,9 @@ class CourseSeeder extends Seeder
                 'title' => $faker->sentence(3),
                 'description' => $faker->paragraph,
                 'price' => $faker->randomFloat(2, 20, 300),
-                'learning_objectives' => $faker->text(200),
-                'user_id' => $faker->randomElement($userIds),
-                'category_id' => $faker->randomElement($categoryIds),
+                'learning_objectives' => "test",
+                'user_id' => 1,
+                'category_id' => 1,
                 'is_featured' => $faker->boolean,
             ]);
         }

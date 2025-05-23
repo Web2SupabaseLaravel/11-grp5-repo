@@ -6,12 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-   
+
     public function up(): void
     {
         Schema::create('lessons', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')->constrained('courses');
+
+            $table->foreignId('course_id')
+            ->constrained('courses')
+            ->onDelete('cascade');
+
             $table->string('title');
             $table->text('content');
             $table->enum('content_type',['video', 'article', 'quiz']);

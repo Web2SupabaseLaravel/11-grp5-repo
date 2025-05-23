@@ -25,10 +25,10 @@ class LessonSeeder extends Seeder
 
             for ($i = 1; $i <= $lessonCount; $i++) {
                 Lesson::create([
-                    'course_id' => $courseId,
+                    'course_id' => 1,
                     'title' => $faker->sentence(4),
                     'content' => $faker->paragraphs(rand(1, 3), true),
-                    'content_type' => $faker->randomElement(['video', 'text', 'quiz']),
+                    'content_type' => $faker->randomElement(['video', 'article', 'quiz']),
                     'lesson_order' => $i,
                 ]);
             }

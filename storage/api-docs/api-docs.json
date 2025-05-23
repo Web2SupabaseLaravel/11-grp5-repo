@@ -1,0 +1,2438 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel API",
+        "description": "API Documentation for User Management",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Local server"
+        }
+    ],
+    "paths": {
+        "/api/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get all categories",
+                "operationId": "3f5817a34833d0a1f4af4548dd3aeaba",
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    },
+                    "404": {
+                        "description": "No categories found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Create a new category",
+                "operationId": "71fcad552bb0eaba9fb191fd8d8dcab0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Science"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "All science-related content"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Category created successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/categories/{id}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get a specific category",
+                "operationId": "c68e76d323c008827a9e47398b1583de",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Category retrieved successfully"
+                    },
+                    "404": {
+                        "description": "Category not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Update a category",
+                "operationId": "0e686b2748211cc688333ed705dc111f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Math"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Mathematics courses"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Category updated successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Delete a category",
+                "operationId": "4c12e22a7f8c617bd83bfa1fdc05428d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Category deleted successfully"
+                    },
+                    "404": {
+                        "description": "Category not found"
+                    }
+                }
+            }
+        },
+        "/api/certificates": {
+            "get": {
+                "tags": [
+                    "Certificates"
+                ],
+                "summary": "Get all certificates",
+                "operationId": "542620d99fb7a93d6889bcd434d9afe0",
+                "responses": {
+                    "200": {
+                        "description": "List of certificates"
+                    },
+                    "404": {
+                        "description": "No certificates found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Certificates"
+                ],
+                "summary": "Create a new certificate",
+                "operationId": "4e782d44d2eb7763463a7a56e77545a0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "course_id",
+                                    "certificate_path"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "course_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "issued_at": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-05-23"
+                                    },
+                                    "certificate_path": {
+                                        "type": "string",
+                                        "example": "/certificates/cert_123.pdf"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Certificate created successfully"
+                    }
+                }
+            }
+        },
+        "/api/certificates/{id}": {
+            "get": {
+                "tags": [
+                    "Certificates"
+                ],
+                "summary": "Get certificate by ID",
+                "operationId": "191e2a30f6ace09ac91b4b07289cfa86",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Certificate details"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Certificates"
+                ],
+                "summary": "Update a certificate",
+                "operationId": "491a76b1ff829a5822f5829f94d3c35f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "course_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "issued_at": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-05-23"
+                                    },
+                                    "certificate_path": {
+                                        "type": "string",
+                                        "example": "/certificates/cert_123_updated.pdf"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Certificate updated successfully"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Certificates"
+                ],
+                "summary": "Delete a certificate",
+                "operationId": "733beb8b840fc22a4506f6a8d59784c3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Certificate deleted successfully"
+                    }
+                }
+            }
+        },
+        "/api/courses": {
+            "get": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "Get all courses",
+                "operationId": "02eeda67042dba2d22a517f26fb8eaf1",
+                "responses": {
+                    "200": {
+                        "description": "List of all courses"
+                    },
+                    "404": {
+                        "description": "No courses found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "Create a new course",
+                "operationId": "a4d6b7e7be59571034428ffbb86aaf0a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "price",
+                                    "user_id",
+                                    "category_id"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Laravel Basics"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Introduction to Laravel"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 99.99
+                                    },
+                                    "learning_objectives": {
+                                        "type": "string",
+                                        "example": "Routing, Controllers, Views"
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "is_featured": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Course created successfully"
+                    }
+                }
+            }
+        },
+        "/api/courses/{id}": {
+            "get": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "Get a course by ID",
+                "operationId": "f170bd35e3106c9d9bf5807499c80b68",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Course data"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "Update a course",
+                "operationId": "4d00e54a4b57b3259c40894ad2d0c76b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Advanced Laravel"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Updated course description"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "example": 120
+                                    },
+                                    "learning_objectives": {
+                                        "type": "string",
+                                        "example": "Middleware, Policies"
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "is_featured": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Course updated successfully"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Courses"
+                ],
+                "summary": "Delete a course",
+                "operationId": "3a2888333ed2868b6102094f5348520e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Course deleted successfully"
+                    }
+                }
+            }
+        },
+        "/api/enrollments": {
+            "get": {
+                "tags": [
+                    "Enrollments"
+                ],
+                "summary": "Get all enrollments",
+                "operationId": "e10c9170029fc2712ce897b551063cbf",
+                "responses": {
+                    "200": {
+                        "description": "List of enrollments"
+                    },
+                    "404": {
+                        "description": "No enrollments found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Enrollments"
+                ],
+                "summary": "Create a new enrollment",
+                "operationId": "b5e369b8961e3cc480e849055f0fed5e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "course_id",
+                                    "enrollment_date",
+                                    "completed_at"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "course_id": {
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "enrollment_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-06-01"
+                                    },
+                                    "completed_at": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-09-01"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Enrollment created successfully"
+                    }
+                }
+            }
+        },
+        "/api/enrollments/{id}": {
+            "get": {
+                "tags": [
+                    "Enrollments"
+                ],
+                "summary": "Get a specific enrollment",
+                "operationId": "82a31a061d70a7170f1b281b5c0d421b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Enrollment retrieved successfully"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Enrollments"
+                ],
+                "summary": "Update an enrollment",
+                "operationId": "51f3156899bf0eca687d2e3b59b2620c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "course_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "enrollment_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-06-01"
+                                    },
+                                    "completed_at": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-09-01"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Enrollment updated successfully"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Enrollments"
+                ],
+                "summary": "Delete an enrollment",
+                "operationId": "573185d9ba85f5ff0e8b3b0c62e1f86b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Enrollment deleted successfully"
+                    }
+                }
+            }
+        },
+        "/api/lessons": {
+            "get": {
+                "tags": [
+                    "Lessons"
+                ],
+                "summary": "Get all lessons",
+                "operationId": "db776a108da2bb0a2f97ede1e0443b1c",
+                "responses": {
+                    "200": {
+                        "description": "List of all lessons"
+                    },
+                    "404": {
+                        "description": "No lessons found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Lessons"
+                ],
+                "summary": "Create a new lesson",
+                "operationId": "658a38a7547f197dff10e6e5a181517f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "course_id",
+                                    "title",
+                                    "content",
+                                    "content_type",
+                                    "lesson_order"
+                                ],
+                                "properties": {
+                                    "course_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Introduction to Variables"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "example": "This lesson covers the basics of variables..."
+                                    },
+                                    "content_type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "video",
+                                            "article",
+                                            "quiz"
+                                        ],
+                                        "example": "video"
+                                    },
+                                    "lesson_order": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Lesson created successfully"
+                    }
+                }
+            }
+        },
+        "/api/lessons/{id}": {
+            "get": {
+                "tags": [
+                    "Lessons"
+                ],
+                "summary": "Get a lesson by ID",
+                "operationId": "c3bffa9927837943c0aca604caab3aef",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lesson data"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Lessons"
+                ],
+                "summary": "Update a lesson",
+                "operationId": "8046c5c055f4b9fcb7cdbb02a7558ec2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "course_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Updated Lesson Title"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "example": "Updated content"
+                                    },
+                                    "content_type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "video",
+                                            "article",
+                                            "quiz"
+                                        ],
+                                        "example": "article"
+                                    },
+                                    "lesson_order": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Lesson updated successfully"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Lessons"
+                ],
+                "summary": "Delete a lesson",
+                "operationId": "ea9726107eece7c4c6862bf05d6ea7aa",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lesson deleted successfully"
+                    }
+                }
+            }
+        },
+        "/notifications": {
+            "get": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Get all notifications for the authenticated user",
+                "operationId": "0f031f66cd8c52bf73e89fb2d050ad83",
+                "responses": {
+                    "200": {
+                        "description": "List of notifications"
+                    },
+                    "404": {
+                        "description": "No notifications found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Create a new notification for the authenticated user",
+                "operationId": "258ba7c348fd4283c6b3802a69fe2fb0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "message",
+                                    "type"
+                                ],
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "New message received"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "example": "info"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Notification created successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/notifications/{id}": {
+            "get": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Get a specific notification by ID",
+                "operationId": "0c8e017ab6d765f82f97368b80f52b8e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Notification details"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Update a notification",
+                "operationId": "38c5f13acd3d0b84545d309539e6b972",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Updated notification message"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "example": "warning"
+                                    },
+                                    "is_read": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Notification updated successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Delete a notification",
+                "operationId": "ccdcc730b2088097dd94128f24960dbf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Notification deleted successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/profile/edit": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Get the authenticated user's profile information",
+                "operationId": "d06bd8fd9d326eb7a380edbdcea9928f",
+                "responses": {
+                    "200": {
+                        "description": "Profile form with user info"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/profile": {
+            "put": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Update the authenticated user's profile",
+                "operationId": "c6f41207c4916ab1e901279166ddb5b5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "302": {
+                        "description": "Redirect to profile edit with status"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Delete the authenticated user's account",
+                "operationId": "1d6a5c6489e35a763aa97ebef12863ce",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "password"
+                                ],
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "example": "userpassword"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "302": {
+                        "description": "User logged out and redirected to homepage"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/progress": {
+            "get": {
+                "tags": [
+                    "Progress"
+                ],
+                "summary": "Get all progress records",
+                "operationId": "4a3505cae17c58a2c76cc665245001ac",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "No progress records found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Progress"
+                ],
+                "summary": "Create a new progress record",
+                "operationId": "db8b1b525ba566fd92ba6280876750ed",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "enrollment_id",
+                                    "lesson_id",
+                                    "is_completed",
+                                    "completed_at"
+                                ],
+                                "properties": {
+                                    "enrollment_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "lesson_id": {
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "is_completed": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "completed_at": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-01-01"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Progress created successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/progress/{id}": {
+            "get": {
+                "tags": [
+                    "Progress"
+                ],
+                "summary": "Get a specific progress record",
+                "operationId": "52a86ac02bf4627a585313f070cea06b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Progress found"
+                    },
+                    "404": {
+                        "description": "Progress not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Progress"
+                ],
+                "summary": "Update an existing progress record",
+                "operationId": "2a486e13cf0ed9cb46c769b85a44cd33",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "enrollment_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "lesson_id": {
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "is_completed": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "completed_at": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-01-01"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Progress updated successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Progress"
+                ],
+                "summary": "Delete a progress record",
+                "operationId": "db39d91058105d8e1d9f80879f35f9f5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Progress deleted successfully"
+                    },
+                    "404": {
+                        "description": "Progress not found"
+                    }
+                }
+            }
+        },
+        "/api/quiz-answers": {
+            "get": {
+                "tags": [
+                    "Quiz Answers"
+                ],
+                "summary": "Get all quiz answers",
+                "operationId": "3e09ffcd0f40707f805a54beb86c87d9",
+                "responses": {
+                    "200": {
+                        "description": "List of quiz answers"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Quiz Answers"
+                ],
+                "summary": "Create a new quiz answer",
+                "operationId": "daa88c4bd640c90979489234d2e4b02c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "quiz_question_id",
+                                    "answer_text",
+                                    "is_correct"
+                                ],
+                                "properties": {
+                                    "quiz_question_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "answer_text": {
+                                        "type": "string",
+                                        "example": "Paris"
+                                    },
+                                    "is_correct": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Quiz answer created successfully"
+                    }
+                }
+            }
+        },
+        "/api/quiz-answers/{id}": {
+            "get": {
+                "tags": [
+                    "Quiz Answers"
+                ],
+                "summary": "Get a specific quiz answer",
+                "operationId": "3e5263510a5921e44b2b599be82da9e5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quiz answer data"
+                    },
+                    "404": {
+                        "description": "Quiz answer not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Quiz Answers"
+                ],
+                "summary": "Update a quiz answer",
+                "operationId": "9dc6239fee02a9ab4b750430a4771086",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "quiz_question_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "answer_text": {
+                                        "type": "string",
+                                        "example": "Paris"
+                                    },
+                                    "is_correct": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Quiz answer updated successfully"
+                    },
+                    "404": {
+                        "description": "Quiz answer not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Quiz Answers"
+                ],
+                "summary": "Delete a quiz answer",
+                "operationId": "2bd0f594f3177a581159bacd80e966cb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Quiz answer deleted successfully"
+                    },
+                    "404": {
+                        "description": "Quiz answer not found"
+                    }
+                }
+            }
+        },
+        "/api/quizzes": {
+            "get": {
+                "tags": [
+                    "Quizzes"
+                ],
+                "summary": "Get all quizzes",
+                "operationId": "eb9ba15b35ba53ab91ba8b1a4e215e29",
+                "responses": {
+                    "200": {
+                        "description": "List of quizzes"
+                    },
+                    "404": {
+                        "description": "No quizzes found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Quizzes"
+                ],
+                "summary": "Create a new quiz",
+                "operationId": "2513a2f792e5c3a5bccd78eb9b4e3786",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "lesson_id",
+                                    "title"
+                                ],
+                                "properties": {
+                                    "lesson_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Quiz Title"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Optional description"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Quiz created successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/quizzes/{id}": {
+            "get": {
+                "tags": [
+                    "Quizzes"
+                ],
+                "summary": "Get quiz by ID",
+                "operationId": "d34cf9a999162f1e8ea1b8cce62d7cd5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Quiz ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quiz data"
+                    },
+                    "404": {
+                        "description": "Quiz not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Quizzes"
+                ],
+                "summary": "Update a quiz",
+                "operationId": "ec0541b57cafc55265fa809c24ccfa93",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Quiz ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "lesson_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Updated Title"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Updated description"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Quiz updated successfully"
+                    },
+                    "404": {
+                        "description": "Quiz not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Quizzes"
+                ],
+                "summary": "Delete a quiz",
+                "operationId": "4518c837f14ffa6e35fd3baeccbc73bb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Quiz ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quiz deleted successfully"
+                    },
+                    "404": {
+                        "description": "Quiz not found"
+                    }
+                }
+            }
+        },
+        "/api/quiz-questions": {
+            "get": {
+                "tags": [
+                    "Quiz Questions"
+                ],
+                "summary": "Get all quiz questions",
+                "operationId": "022690e965fd7da8e3ff36c81ab7249e",
+                "responses": {
+                    "200": {
+                        "description": "List of quiz questions"
+                    },
+                    "404": {
+                        "description": "No quiz questions found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Quiz Questions"
+                ],
+                "summary": "Create a new quiz question",
+                "operationId": "c7aa8b3bc0be8d57e383bbed081039a4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "question",
+                                    "answer",
+                                    "quiz_id"
+                                ],
+                                "properties": {
+                                    "question": {
+                                        "type": "string",
+                                        "example": "What is the capital of France?"
+                                    },
+                                    "answer": {
+                                        "type": "string",
+                                        "example": "Paris"
+                                    },
+                                    "quiz_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Quiz question created successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/quiz-questions/{id}": {
+            "get": {
+                "tags": [
+                    "Quiz Questions"
+                ],
+                "summary": "Get a specific quiz question",
+                "operationId": "39c78e6bb3cc5ae0eab6fcfc3985e122",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Quiz question ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quiz question data"
+                    },
+                    "404": {
+                        "description": "Quiz question not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Quiz Questions"
+                ],
+                "summary": "Update a quiz question",
+                "operationId": "b97be638015f79b3a01addc532ab1a99",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Quiz question ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "question": {
+                                        "type": "string",
+                                        "example": "Updated question?"
+                                    },
+                                    "answer": {
+                                        "type": "string",
+                                        "example": "Updated answer"
+                                    },
+                                    "quiz_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Quiz question updated successfully"
+                    },
+                    "404": {
+                        "description": "Quiz question not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Quiz Questions"
+                ],
+                "summary": "Delete a quiz question",
+                "operationId": "b52e4db0e43ccb93b4861113fd8b977d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Quiz question ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quiz question deleted successfully"
+                    },
+                    "404": {
+                        "description": "Quiz question not found"
+                    }
+                }
+            }
+        },
+        "/api/roles": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Get list of all roles",
+                "operationId": "77e3636d8592997ce9d6d27b50857a69",
+                "responses": {
+                    "200": {
+                        "description": "List of roles"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Create a new role",
+                "operationId": "4a563842fbfcad237f63da43065fca3d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Role created"
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    }
+                }
+            }
+        },
+        "/api/roles/{id}": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Get a single role",
+                "operationId": "7fb0667a295b7678a30353aa11739683",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Role ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role details"
+                    },
+                    "404": {
+                        "description": "Role not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Update an existing role",
+                "operationId": "786d6990093a8eb3a56931f19a827e43",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Role ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Role updated"
+                    },
+                    "404": {
+                        "description": "Role not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Delete a role",
+                "operationId": "8285c46981c60ad600aa4077307aec04",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Role ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role deleted"
+                    },
+                    "404": {
+                        "description": "Role not found"
+                    }
+                }
+            }
+        },
+        "/api/transactions": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Get all transactions",
+                "operationId": "6581469356772e7a74a0d79897544f1a",
+                "responses": {
+                    "200": {
+                        "description": "List of transactions"
+                    },
+                    "404": {
+                        "description": "No transactions found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Create a new transaction",
+                "operationId": "ab765dced58cfe2f620929db31452145",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "course_id",
+                                    "amount"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "course_id": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "amount": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 99.99
+                                    },
+                                    "payment_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-05-01"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "published"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Transaction created successfully"
+                    }
+                }
+            }
+        },
+        "/api/transactions/{id}": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Get a specific transaction",
+                "operationId": "b3d11351fb6ea87ee797d24314e3b7fa",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction retrieved successfully"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Update a transaction",
+                "operationId": "a3de6e068b921a033fb998246070466a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "course_id": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "amount": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 49.99
+                                    },
+                                    "payment_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-05-20"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "archived"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Transaction updated successfully"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Delete a transaction",
+                "operationId": "5b95ee78a4db85f35f43b2b4eea85447",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction deleted successfully"
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register a new user",
+                "operationId": "2f25885f3b6f61ca11724ec302d2e439",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Alaa Sousa"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "alaa@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "12345678"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login user",
+                "operationId": "0fc9610184083ac6dddab2c63139225a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "alaa@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "12345678"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful"
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout user",
+                "operationId": "67d5147477c548bfbc3f982833bbc7bd",
+                "responses": {
+                    "200": {
+                        "description": "Logout successful"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List all users",
+                "operationId": "c457726701591d1183b53aa71fc13441",
+                "responses": {
+                    "200": {
+                        "description": "List of users"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create new user",
+                "operationId": "592819a0265360b2014512d6dbfaf0e7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "role_id"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "New User"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "newuser@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    },
+                                    "role_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get single user by ID",
+                "operationId": "36a33ff774d5cba33c039dec2c3e0287",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User found"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update a user",
+                "operationId": "b9091397c8b25f12c6adb74be6ce3a5a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Updated Name"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "updated@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "newpassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete a user",
+                "operationId": "fa56cffde745d3f152f95cbacd936c0b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Categories",
+            "description": "API Endpoints for managing categories"
+        },
+        {
+            "name": "Certificates",
+            "description": "API Endpoints for managing certificates"
+        },
+        {
+            "name": "Courses",
+            "description": "API Endpoints for managing courses"
+        },
+        {
+            "name": "Enrollments",
+            "description": "API Endpoints for managing enrollments"
+        },
+        {
+            "name": "Lessons",
+            "description": "API Endpoints for managing lessons"
+        },
+        {
+            "name": "Quiz Answers",
+            "description": "API Endpoints for managing quiz answers"
+        },
+        {
+            "name": "Quizzes",
+            "description": "API Endpoints for managing quizzes"
+        },
+        {
+            "name": "Quiz Questions",
+            "description": "API Endpoints for managing quiz questions"
+        },
+        {
+            "name": "Transactions",
+            "description": "API Endpoints for managing transactions"
+        },
+        {
+            "name": "Notifications",
+            "description": "Notifications"
+        },
+        {
+            "name": "Profile",
+            "description": "Profile"
+        },
+        {
+            "name": "Progress",
+            "description": "Progress"
+        },
+        {
+            "name": "Roles",
+            "description": "Roles"
+        },
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
+        }
+    ]
+}
