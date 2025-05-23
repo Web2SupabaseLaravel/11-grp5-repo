@@ -22,7 +22,7 @@ class QuizSeeder extends Seeder
 
         foreach ($lessonIds as $lessonId) {
             Quiz::create([
-                'lesson_id' => $lessonId,
+                'lesson_id' => 1,
                 'title' => $faker->sentence(3),
                 'description' => $faker->paragraph,
             ]);

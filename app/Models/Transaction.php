@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
-    protected $table ='Transaction'; 
+    protected $table ='Transaction';
     protected $fillable = [
         'id',
         'user_id',
@@ -14,7 +14,7 @@ class Transaction extends Model
         'amount',
         'payment_date',
         'status',
-        
+
     ];
 
     public function user()
@@ -23,6 +23,6 @@ class Transaction extends Model
     }
      public function course()
     {
-        return $this->belongsTo(courses::class, 'course_id');
+        return $this->belongsTo(Course::class, 'course_id');
     }
 }

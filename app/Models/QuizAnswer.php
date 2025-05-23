@@ -9,7 +9,6 @@ class QuizAnswer extends Model
 {
     use HasFactory;
 
-    // ✅ Correct table name
     protected $table = 'quiz_answers';
 
     protected $fillable = [
@@ -20,18 +19,12 @@ class QuizAnswer extends Model
         'score',
     ];
 
-    /**
-     * Get the question associated with the answer.
-     */
     public function question()
     {
-        // ✅ Correct foreign key
         return $this->belongsTo(QuizQuestion::class, 'quiz_question_id');
     }
 
-    /**
-     * Get the user who answered.
-     */
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
