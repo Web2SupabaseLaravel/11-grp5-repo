@@ -8,72 +8,83 @@ use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\RegisterUser;
 use App\Mail\ConfirmEmail;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\WelcomeEmail;
-use App\Mail\WelcomeMail;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
+    /**
+     * Register a new user and send verification email.
+     */
     public function register(RegisterUser $request)
     {
+        $validated = $request->validated();
+
+        // Create user with verification token
         $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-            'role_id'  => 2,
-            'email_verification_token' => Str::random(32),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role_id' => 2,
+            'email_verification_token' => Str::random(64),
         ]);
 
-        $token = JWTAuth::fromUser($user);
         // Send confirmation email
         Mail::to($user->email)->send(new ConfirmEmail($user));
 
-        // Fire registered event
-        event(new Registered($user));
-
-        // Generate JWT token
+        // Issue JWT token
+        $token = JWTAuth::fromUser($user);
 
         return response()->json([
-            'message' => 'User registered successfully. Please verify your email.',
-            'user'    => $user,
-            'token'   => $token,
+            'message' => 'Registered! Please check your email to verify your account.',
+            'user' => $user,
+            'token' => $token,
         ], 201);
     }
 
-    // User login using JWT
+    /**
+     * Authenticate user and issue token (only if email is verified).
+     */
     public function login(Request $request)
     {
-        $request->validate([
-            'email'    => 'required|email',
+        $credentials = $request->validate([
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
-        $credentials = $request->only('email', 'password');
-
-        if (!$token = JWTAuth::attempt($credentials)) {
+        // Attempt authentication
+        if (! $token = JWTAuth::attempt($credentials)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
         $user = JWTAuth::user();
 
-        Mail::to($user->email)->send(new ConfirmEmail($user));
+        // Block login if email not verified
+        if (! $user->email_verified_at) {
+            return response()->json([
+                'message' => 'Please verify your email before logging in.'
+            ], 403);
+        }
+
         return response()->json([
             'message' => 'Login successful',
-            'user'    => $user,
-            'token'   => $token,
+            'user' => $user,
+            'token' => $token,
         ], 200);
     }
 
-    // Logout (JWT tokens are stateless, typically managed client-side, but you can blacklist tokens)
+    /**
+     * Invalidate the current token.
+     */
     public function logout()
     {
         JWTAuth::invalidate(JWTAuth::getToken());
         return response()->json(['message' => 'Logout successful'], 200);
     }
 
-    // List all users
+    /**
+     * List all users (admin).
+     */
     public function index()
     {
         $users = User::all();
@@ -85,7 +96,9 @@ class UserController extends Controller
         return response()->json($users, 200);
     }
 
-    // Store new user (admin usage)
+    /**
+     * Create a new user (admin).
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -105,13 +118,17 @@ class UserController extends Controller
         return response()->json(['message' => 'User created', 'user' => $user], 201);
     }
 
-    // Display single user
+    /**
+     * Show a specific user.
+     */
     public function show(User $user)
     {
         return response()->json($user, 200);
     }
 
-    // Update existing user
+    /**
+     * Update an existing user.
+     */
     public function update(Request $request, User $user)
     {
         $request->validate([
@@ -121,15 +138,17 @@ class UserController extends Controller
         ]);
 
         $user->update([
-            'name'     => $request->name ?? $user->name,
-            'email'    => $request->email ?? $user->email,
+            'name'     => $request->name     ?? $user->name,
+            'email'    => $request->email    ?? $user->email,
             'password' => $request->password ? Hash::make($request->password) : $user->password,
         ]);
 
         return response()->json(['message' => 'User updated', 'user' => $user], 200);
     }
 
-    // Delete user
+    /**
+     * Delete a user.
+     */
     public function destroy(User $user)
     {
         $user->delete();
