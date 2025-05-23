@@ -42,7 +42,7 @@ return [
     ],
 
     'api' => [
-        'driver' => 'jwt', // ✅ CORRECT for tymon/jwt-auth
+        'driver' => 'jwt', 
         'provider' => 'users',
     ],
 ],

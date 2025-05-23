@@ -23,9 +23,10 @@ class UserController extends Controller
             'email'    => $request->email,
             'password' => Hash::make($request->password),
             'role_id'  => 2,
-            'email_verification_token' => Str::random(32), 
+            'email_verification_token' => Str::random(32),
         ]);
 
+        $token = JWTAuth::fromUser($user);
         // Send confirmation email
         Mail::to($user->email)->send(new ConfirmEmail($user));
 
@@ -33,7 +34,6 @@ class UserController extends Controller
         event(new Registered($user));
 
         // Generate JWT token
-        $token = JWTAuth::fromUser($user);
 
         return response()->json([
             'message' => 'User registered successfully. Please verify your email.',
@@ -58,6 +58,7 @@ class UserController extends Controller
 
         $user = JWTAuth::user();
 
+        Mail::to($user->email)->send(new ConfirmEmail($user));
         return response()->json([
             'message' => 'Login successful',
             'user'    => $user,

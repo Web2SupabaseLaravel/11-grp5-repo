@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Course;
 use App\Models\User;
-use App\Models\categories;
+use App\Models\Category;
 use Faker\Factory as Faker;
 
 class CourseSeeder extends Seeder
@@ -15,7 +15,7 @@ class CourseSeeder extends Seeder
         $faker = Faker::create();
 
         $userIds = User::pluck('id')->toArray();
-        $categoryIds = categories::pluck('id')->toArray();
+        $categoryIds = Category::pluck('id')->toArray();
 
         if (empty($userIds) || empty($categoryIds)) {
             $this->command->warn('Users or Categories table is empty!');
