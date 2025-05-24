@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('progress', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('enrollment_id')->constrained('enrollment');
             $table->foreignId('lesson_id')->constrained('lesson');
-            $table->bool('is_completed');
+            $table->foreignId('enrollment_id')->constrained('enrollment');
+            $table->boolean('is_completed');
             $table->timestamp('completed_at');
             $table->timestamps();
         });
