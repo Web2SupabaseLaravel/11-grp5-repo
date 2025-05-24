@@ -12,10 +12,8 @@ class CourseSeeder extends Seeder
 {
     public function run(): void
     {
-        $faker = Faker::create();
-
-        $userIds = User::pluck('id')->toArray();
-        $categoryIds = Category::pluck('id')->toArray();
+       $user=User::first();
+        $category = Category::first();
 
         if (empty($userIds) || empty($categoryIds)) {
             $this->command->warn('Users or Categories table is empty!');
@@ -28,8 +26,8 @@ class CourseSeeder extends Seeder
                 'description' => $faker->paragraph,
                 'price' => $faker->randomFloat(2, 20, 300),
                 'learning_objectives' => "test",
-                'user_id' => 1,
-                'category_id' => 1,
+                'user_id' => $user->id,
+                'category_id' => $category->id,
                 'is_featured' => $faker->boolean,
             ]);
         }
