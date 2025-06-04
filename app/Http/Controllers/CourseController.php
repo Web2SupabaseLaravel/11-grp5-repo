@@ -137,22 +137,35 @@ class CourseController extends Controller
      *     )
      * )
      */
-    public function update(Request $request, Course $course)
-    {
-        $validatedData = $request->validate([
-            'title' => 'sometimes|string|max:255',
-            'description' => 'sometimes|string',
-            'price' => 'sometimes|numeric|min:0',
-            'learning_objectives' => 'sometimes',
-            'category_id' => 'sometimes|exists:categories,id',
-            'is_featured' => 'sometimes|boolean',
-        ]);
+   public function update(Request $request, Course $course)
+{
+    $request->validate([
+        'title' => 'sometimes|required|string|max:255',
+        'description' => 'sometimes|required|string',
+        'price' => 'sometimes|required|numeric|min:0',
+        'learning_objectives' => 'sometimes',
+        'user_id' => 'sometimes|exists:users,id',
+        'category_id' => 'sometimes|exists:categories,id',
+        'is_featured' => 'sometimes|boolean',
+    ]);
 
-        $course->fill($validatedData);
-        $course->save();
+    $course->update([
+        'title' => $request->title ?? $course->title,
+        'description' => $request->description ?? $course->description,
+        'price' => $request->price ?? $course->price,
+        'learning_objectives' => $request->learning_objectives ?? $course->learning_objectives,
+        'user_id' => $request->user_id ?? $course->user_id,
+        'category_id' => $request->category_id ?? $course->category_id,
+        'is_featured' => $request->is_featured ?? $course->is_featured,
+    ]);
 
-        return response()->json($course);
-    }
+    return response()->json([
+        'message' => 'Course updated successfully',
+        'course' => $course,
+    ], 200);
+}
+
+
 
     /**
      * @OA\Delete(
