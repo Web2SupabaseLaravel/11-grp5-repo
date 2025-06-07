@@ -21,6 +21,13 @@ use App\Http\Controllers\CategoryController;
 Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);
 
+Route::middleware('is_admin')->group(function () {
+    // existing admin resource routes...
+
+    // add these two:
+    Route::get('admin/stats',           [\App\Http\Controllers\AdminController::class, 'stats']);
+    Route::get('admin/recent-activity', [\App\Http\Controllers\AdminController::class, 'recentActivity']);
+});
 // Routes for Email verification (if using email verification)
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {
     $request->user()->markEmailAsVerified();

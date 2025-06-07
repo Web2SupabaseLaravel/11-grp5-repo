@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\QuizAnswer;
 use Illuminate\Http\Request;
 use App\Http\Requests\QuizAnswerStoreRequest;
-use App\Http\Requests\QuizAnswerUpdateRequest;
+use App\Http\Requests\QuizaAnswerUpdateRequest;
 
 /**
  * @OA\Tag(
@@ -52,7 +52,7 @@ class QuizAnswerController extends Controller
      *     )
      * )
      */
-    public function store(QuizAnswerStoreRequest $request)
+    public function store(QuizaAnswerUpdateRequest $request)
     {
         $validated = $request->validated();
         $quizAnswer = QuizAnswer::create($validated);
@@ -113,7 +113,7 @@ class QuizAnswerController extends Controller
      *     )
      * )
      */
-    public function update(QuizAnswerUpdateRequest $request, QuizAnswer $quizAnswer)
+    public function update(QuizaAnswerUpdateRequest $request, QuizAnswer $quizAnswer)
     {
         $validated = $request->validated();
         $quizAnswer->update($validated);
