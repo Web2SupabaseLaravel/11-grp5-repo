@@ -23,9 +23,8 @@ Route::post('register', [UserController::class, 'register']);
 
 Route::middleware('is_admin')->group(function () {
     // existing admin resource routes...
-
     // add these two:
-    Route::get('admin/stats',           [\App\Http\Controllers\AdminController::class, 'stats']);
+    Route::get('admin/stats', [\App\Http\Controllers\AdminController::class, 'stats']);
     Route::get('admin/recent-activity', [\App\Http\Controllers\AdminController::class, 'recentActivity']);
 });
 // Routes for Email verification (if using email verification)
@@ -33,6 +32,15 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request) {
     $request->user()->markEmailAsVerified();
     return response()->json(['message' => 'Email verified successfully']);
 })->middleware(['auth:sanctum', 'signed'])->name('verification.verify');
+
+Route::middleware('auth:api')->group(function () {
+    Route::put('/user', [UserController::class, 'updateProfile']);
+});
+
+Route::middleware('auth:api')->put('/change-password', [UserController::class, 'changePassword']);
+Route::delete('/user', [UserController::class, 'deleteAccount']);
+
+
 
 // Resend email verification notification
 Route::post('/email/verification-notification', function (Request $request) {
@@ -60,6 +68,11 @@ Route::middleware(['auth:api'])->group(function () {
         Route::apiResource('quizzes', QuizController::class);
    // });
 
+   Route::middleware('auth:api')->group(function () {
+    Route::get('/my-courses', [CourseController::class, 'myCourses']);
+    });
+
+    Route::apiResource('courses', CourseController::class);
     // General authenticated user routes
     Route::apiResource('quiz-questions', QuizQuestionController::class);
     Route::apiResource('quiz-answers', QuizAnswerController::class);
@@ -69,7 +82,10 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('progress', ProgressController::class);
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('notifications', NotificationController::class);
-    Route::apiResource('Course',CourseController::class);
+
         Route::apiResource('transaction', TransactionController::class);
 
 });
+
+Route::get('/courses', [CourseController::class, 'index']);
+Route::get('/courses/{course}', [CourseController::class, 'show']);

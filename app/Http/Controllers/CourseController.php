@@ -30,7 +30,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::all();
+        $courses = Course::with('user')->latest()->get();
 
         if ($courses->isEmpty()) {
             return response()->json(['message' => 'No courses found'], 404);
@@ -38,6 +38,18 @@ class CourseController extends Controller
 
         return response()->json($courses, 200);
     }
+
+    public function myCourses()
+{
+    $userId = auth()->id();
+    $courses = Course::where('user_id', $userId)->latest()->get();
+
+    if ($courses->isEmpty()) {
+        return response()->json(['message' => 'No courses found for this user'], 404);
+    }
+
+    return response()->json($courses, 200);
+}
 
     /**
      * @OA\Post(
@@ -64,29 +76,29 @@ class CourseController extends Controller
      * )
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'learning_objectives' => 'nullable|string',
-            'user_id' => 'required|integer|exists:users,id',
-            'category_id' => 'required|integer|exists:categories,id',
-            'is_featured' => 'boolean',
-        ]);
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'price' => 'required|numeric',
+        'learning_objectives' => 'nullable|string',
+        'category_id' => 'required|integer|exists:categories,id',
+        'is_featured' => 'boolean',
+    ]);
 
-        $course = Course::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'price' => $request->price,
-            'learning_objectives' => $request->learning_objectives,
-            'user_id' => $request->user_id,
-            'category_id' => $request->category_id,
-            'is_featured' => $request->is_featured ?? false,
-        ]);
+    $course = Course::create([
+        'title' => $request->title,
+        'description' => $request->description,
+        'price' => $request->price,
+        'learning_objectives' => $request->learning_objectives,
+        'user_id' => auth()->id(),
+        'category_id' => $request->category_id,
+        'is_featured' => $request->is_featured ?? false,
+    ]);
 
-        return response()->json(['message' => 'Course created successfully', 'course' => $course], 201);
-    }
+    return response()->json(['message' => 'Course created successfully', 'course' => $course], 201);
+}
+
 
     /**
      * @OA\Get(
@@ -107,6 +119,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
+        $course = Course::findOrFail($id);
         return response()->json($course, 200);
     }
 

@@ -55,6 +55,7 @@ class UserController extends Controller
 
         $token = JWTAuth::fromUser($user);
 
+
         return response()->json([
             'message' => 'Registered! Please check your email to verify your account.',
             'user' => $user,
@@ -98,6 +99,8 @@ class UserController extends Controller
                 'message' => 'Please verify your email before logging in.'
             ], 403);
         }
+
+
 
         return response()->json([
             'message' => 'Login successful',
@@ -230,6 +233,59 @@ class UserController extends Controller
         return response()->json(['message' => 'User updated', 'user' => $user], 200);
     }
 
+
+    public function updateProfile(Request $request)
+{
+    $user = $request->user();
+
+    $request->validate([
+        'name'  => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,' . $user->id,
+        'password' => 'sometimes|nullable|string|min:6',
+    ]);
+
+    $user->name = $request->name;
+    $user->email = $request->email;
+
+    if ($request->filled('password')) {
+        $user->password = Hash::make($request->password);
+    }
+
+    $user->save();
+
+    return response()->json(['message' => 'Profile updated successfully', 'user' => $user], 200);
+}
+
+    public function changePassword(Request $request)
+{
+    $user = auth()->user();
+
+    $validator = Validator::make($request->all(), [
+        'currentPassword' => 'required|string',
+        'newPassword' => 'required|string|min:6|confirmed',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'message' => 'Validation error',
+            'errors' => $validator->errors()
+        ], 422);
+    }
+
+    if (!Hash::check($request->currentPassword, $user->password)) {
+        return response()->json([
+            'message' => 'Current password is incorrect.'
+        ], 400);
+    }
+
+    $user->password = Hash::make($request->newPassword);
+    $user->save();
+
+    return response()->json([
+        'message' => 'Password changed successfully.'
+    ], 200);
+}
+
     /**
      * @OA\Delete(
      *     path="/api/users/{id}",
@@ -246,4 +302,11 @@ class UserController extends Controller
         $user->delete();
         return response()->json(['message' => 'User deleted'], 200);
     }
+
+    public function deleteAccount(Request $request)
+{
+    $user = $request->user();
+    $user->delete();
+    return response()->json(['message' => 'Account deleted successfully']);
+}
 }
