@@ -20,10 +20,12 @@ use App\Http\Controllers\CategoryController;
 // Public routes
 Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);
+Route::post('forgot-password', [UserController::class, 'forgotPassword']);
+Route::post('reset-password', [UserController::class, 'resetPassword']);
+Route::post('verify-email', [UserController::class, 'verifyEmail']);
 
 Route::middleware('is_admin')->group(function () {
-    // existing admin resource routes...
-    // add these two:
+
     Route::get('admin/stats', [\App\Http\Controllers\AdminController::class, 'stats']);
     Route::get('admin/recent-activity', [\App\Http\Controllers\AdminController::class, 'recentActivity']);
 });
