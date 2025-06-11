@@ -66,3 +66,9 @@ Route::middleware(['auth:api'])->group(function () {
         Route::apiResource('transaction', TransactionController::class);
 
 });
+Route::get('/courses', [CourseController::class, 'index']);
+Route::get('/courses/{course}', [CourseController::class, 'show']);
+
+Route::get('/upcoming-lessons', [LessonController::class, 'upcoming']);
+
+Route::get('/popular-courses', [CourseController::class, 'popular']);
