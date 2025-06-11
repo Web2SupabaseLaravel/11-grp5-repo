@@ -24,11 +24,19 @@ Route::post('forgot-password', [UserController::class, 'forgotPassword']);
 Route::post('reset-password', [UserController::class, 'resetPassword']);
 Route::post('verify-email', [UserController::class, 'verifyEmail']);
 
-Route::middleware('is_admin')->group(function () {
+Route::middleware(['auth:api','is_admin'])->group(function () {
 
     Route::get('admin/stats', [\App\Http\Controllers\AdminController::class, 'stats']);
     Route::get('admin/recent-activity', [\App\Http\Controllers\AdminController::class, 'recentActivity']);
 });
+Route::middleware('auth:sanctum')->get('/users', [UserController::class, 'index']);
+
+
+Route::middleware(['auth:api', 'is_admin'])->prefix('admin')->group(function () {
+    Route::apiResource('lessons', LessonController::class);
+    // باقي الموارد الخاصة بالادمن هنا
+});
+
 // Routes for Email verification (if using email verification)
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {
     $request->user()->markEmailAsVerified();
@@ -61,6 +69,7 @@ Route::middleware(['auth:api'])->group(function () {
 
     // Admin-only routes
     Route::middleware('is_admin')->group(function () {
+         Route::get('admin/users', [UserController::class, 'index']);
         Route::apiResource('users', UserController::class);
         Route::apiResource('roles', RoleController::class);
     });
