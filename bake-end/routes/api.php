@@ -25,11 +25,15 @@ Route::post('reset-password', [UserController::class, 'resetPassword']);
 Route::post('verify-email', [UserController::class, 'verifyEmail']);
 
 Route::middleware('auth:api' , 'is_admin')->group(function () {
-    // existing admin resource routes...
-    // add these two:
+
     Route::get('admin/stats', [\App\Http\Controllers\AdminController::class, 'stats']);
     Route::get('admin/recent-activity', [\App\Http\Controllers\AdminController::class, 'recentActivity']);
 });
+
+Route::middleware(['auth:api', 'is_admin'])->prefix('admin')->group(function () {
+    Route::apiResource('lessons', LessonController::class);
+});
+
 // Routes for Email verification (if using email verification)
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {
     $request->user()->markEmailAsVerified();
@@ -89,3 +93,8 @@ Route::middleware(['auth:api'])->group(function () {
 
 Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/courses/{course}', [CourseController::class, 'show']);
+
+
+Route::get('/upcoming-lessons', [LessonController::class, 'upcoming']);
+Route::get('/popular-courses', [CourseController::class, 'popular']);
+Route::get('/wishlist', [WishlistController::class, 'index']);

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Lesson;
+use App\Models\Quiz;
 
 class AdminController extends Controller
 {
@@ -15,11 +17,15 @@ class AdminController extends Controller
         // Example statistics—you can adjust to your needs
         $totalUsers       = User::count();
         $totalCourses     = Course::count();
+        $totalLessons     = Lesson::count();
+        $totalQuizzes     = Quiz::count();
         $totalEnrollments = Enrollment::count();
 
         return response()->json([
             'total_users'       => $totalUsers,
             'total_courses'     => $totalCourses,
+            'total_lessons' => $totalLessons,
+            'total_quizzes' => $totalQuizzes,
             'total_enrollments' => $totalEnrollments,
         ]);
     }
