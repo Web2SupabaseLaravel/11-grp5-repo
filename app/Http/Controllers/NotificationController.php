@@ -26,15 +26,17 @@ class NotificationController extends Controller
      * )
      */
     public function index()
-    {
-        $notifications = Auth::user()->notifications;
+{
+    $user = Auth::user();
 
-        if ($notifications->isEmpty()) {
-            return response()->json(['message' => 'No notifications found'], 404);
-        }
-
-        return response()->json($notifications, 200);
+    if (!$user) {
+        return response()->json(['message' => 'Unauthorized'], 401);
     }
+
+    $notifications = $user->notifications()->latest()->take(10)->get();
+
+    return response()->json($notifications, 200);
+}
 
     /**
      * @OA\Post(

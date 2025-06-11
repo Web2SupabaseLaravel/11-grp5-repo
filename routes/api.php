@@ -21,7 +21,7 @@ use App\Http\Controllers\CategoryController;
 Route::post('login', [UserController::class, 'login']);
 Route::post('register', [UserController::class, 'register']);
 
-Route::middleware('is_admin')->group(function () {
+Route::middleware('auth:api' , 'is_admin')->group(function () {
     // existing admin resource routes...
     // add these two:
     Route::get('admin/stats', [\App\Http\Controllers\AdminController::class, 'stats']);
@@ -31,7 +31,7 @@ Route::middleware('is_admin')->group(function () {
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {
     $request->user()->markEmailAsVerified();
     return response()->json(['message' => 'Email verified successfully']);
-})->middleware(['auth:sanctum', 'signed'])->name('verification.verify');
+})->middleware(['auth:api', 'signed'])->name('verification.verify');
 
 Route::middleware('auth:api')->group(function () {
     Route::put('/user', [UserController::class, 'updateProfile']);
@@ -46,7 +46,7 @@ Route::delete('/user', [UserController::class, 'deleteAccount']);
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
     return response()->json(['message' => 'Verification email sent successfully']);
-})->middleware(['auth:sanctum', 'throttle:6,1'])->name('verification.send');
+})->middleware(['auth:api', 'throttle:6,1'])->name('verification.send');
 
 // Authenticated routes
 Route::middleware(['auth:api'])->group(function () {
@@ -64,12 +64,12 @@ Route::middleware(['auth:api'])->group(function () {
     });
 
     // Instructor-only route
-         //Route::middleware('is_instructor')->group(function () {
+    Route::middleware('auth:api')->group(function () {
         Route::apiResource('quizzes', QuizController::class);
-   // });
-
-   Route::middleware('auth:api')->group(function () {
-    Route::get('/my-courses', [CourseController::class, 'myCourses']);
+        Route::get('/my-courses', [CourseController::class, 'myCourses']);
+        Route::apiResource('enrollments', EnrollmentController::class);
+        Route::apiResource('notifications', NotificationController::class);
+        Route::apiResource('lessons', LessonController::class);
     });
 
     Route::apiResource('courses', CourseController::class);
@@ -77,13 +77,10 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('quiz-questions', QuizQuestionController::class);
     Route::apiResource('quiz-answers', QuizAnswerController::class);
     Route::apiResource('certificates', CertificateController::class);
-    Route::apiResource('lessons', LessonController::class);
-    Route::apiResource('enrollments', EnrollmentController::class);
     Route::apiResource('progress', ProgressController::class);
     Route::apiResource('categories', CategoryController::class);
-    Route::apiResource('notifications', NotificationController::class);
+    Route::apiResource('transaction', TransactionController::class);
 
-        Route::apiResource('transaction', TransactionController::class);
 
 });
 

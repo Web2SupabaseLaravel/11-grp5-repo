@@ -30,13 +30,9 @@ class EnrollmentController extends Controller
      */
     public function index()
     {
-        $enrollment = Enrollment::all();
+        $enrollments = Enrollment::all();
 
-        if ($enrollment->isEmpty()) {
-            return response()->json(['message' => 'No users found'], 404);
-        }
-
-        return response()->json($enrollment, 200);
+        return response()->json($enrollments, 200); // Always return 200
     }
 
     /**
